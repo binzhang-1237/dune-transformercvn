@@ -1,0 +1,32 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.envs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs and TensorBoard events
+*.log
+*.log.*
+events.out.tfevents.*
+
+# Training outputs and checkpoints
+/lightning_logs/
+/training_*/
+/tutorial_dense/
+/environment_check_*/
+/test_output/
+**/version_[0-9]*/
+*.ckpt
+*.pt
+*.pth
+*.torchscript
+
+# Local datasets
+/data/
+*.h5
+*.hdf5

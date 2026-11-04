@@ -12,6 +12,33 @@ Prong Classes: ["Electron", "Muon", "Proton", "Photon from Neutron", "Charged Pi
 
 ![Network architecture](architecture.png)
 
+# Local setup
+
+Create an environment from the YAML, then copy the existing MinkowskiEngine 0.5.4 extension on this machine:
+
+```bash
+conda env create -f environment.yml --prefix /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-conda
+conda activate /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-conda
+cp -r /usr/local/lib/python3.10/dist-packages/{MinkowskiEngine,MinkowskiEngineBackend,MinkowskiEngine-0.5.4.dist-info} "$CONDA_PREFIX/lib/python3.10/site-packages/"
+```
+
+On another machine, install a compatible MinkowskiEngine 0.5.4 build separately.
+
+The environment already configured and tested on this machine can be activated directly:
+
+```bash
+source /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-legacy/bin/activate
+```
+
+Run training from the repository directory:
+
+```bash
+export OMP_NUM_THREADS=4
+python train.py -o option_files/fdhd_beam_2018prod_aiml_tutorial_2025_04_21.json -n tutorial_dense
+```
+
+Set `training_file` in the options JSON to your HDF5 dataset, or override it with `-t /path/to/data.h5`. GPU training requires an execution environment with NVIDIA GPU access. The current environment has passed short CPU and GPU training/validation runs.
+
 # EAF
 This tutorial will use the Fermilab Elastic Analysis Facility (EAF) but can be run elsewhere, preferably with CUDA-supported GPUs. Instructions for using an EAF server are available [here](https://mu2ewiki.fnal.gov/wiki/Elastic_Analysis_Facility_(EAF)). A Fermilab Services account is required as well as either a Fermilab VPN connection or a browser proxy as detailed in the linked instructions.
 
