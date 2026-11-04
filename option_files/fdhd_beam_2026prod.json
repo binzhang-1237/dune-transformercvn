@@ -39,9 +39,9 @@
   "gradient_clip": 43,
   "loss_gamma": 1.0,
   "training_file": "/home/binzhang/disk_binzhang/preprocessing_multi_production/Preprocessing_Alejandro/output_final/postprocessed_pixel_maps.h5",
-  "train_validation_split": 0.96,
+  "train_validation_split": 0.6,
   "num_dataloader_workers": 4,
-  "dataset_limit": 0.6,
+  "dataset_limit": 1.0,
   "num_gpu": 1,
   "verbose_output": 1
 }
