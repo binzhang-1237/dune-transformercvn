@@ -48,6 +48,11 @@ sparse-convolution outputs and feature gradients matched the reference exactly.
 The original reference environment was subsequently removed; use the environment
 recreated from the YAML.
 
+The versions of `pexpect`, `pytz`, `tzdata`, and `zipp` were subsequently aligned
+with `environment.txt`. The dependency `more-itertools==10.3.0` was also pinned
+from that list for zipp 1.0.0. Dependency and trainer/analysis import checks were
+repeated after the update.
+
 For later use:
 
 ```bash

@@ -44,9 +44,9 @@
 
   "_comment_training_file": "/exp/dune/data/users/ayankele/fdhd_beam_2018prod_prong_pixels_minkowski_sparse.h5",
   "training_file": "/mnt/ironwolf_14t2/users/zhengyang/fdhd_beam_2018prod_prong_pixels_minkowski_sparse.h5",
-  "train_validation_split": 0.96,
+  "train_validation_split": 0.5,
   "num_dataloader_workers": 4,
-  "dataset_limit": 0.1,
+  "dataset_limit": 0.2,
   "num_gpu": 1,
   "verbose_output": 1
 }
