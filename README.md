@@ -14,30 +14,58 @@ Prong Classes: ["Electron", "Muon", "Proton", "Photon from Neutron", "Charged Pi
 
 # Local setup
 
-Create an environment from the YAML, then copy the existing MinkowskiEngine 0.5.4 extension on this machine:
+On this Ubuntu 22.04 host with RTX 3090 GPUs, recreate the environment with:
 
 ```bash
-conda env create -f environment.yml --prefix /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-conda
-conda activate /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-conda
-cp -r /usr/local/lib/python3.10/dist-packages/{MinkowskiEngine,MinkowskiEngineBackend,MinkowskiEngine-0.5.4.dist-info} "$CONDA_PREFIX/lib/python3.10/site-packages/"
+cd /home/binzhang/dune-transformercvn
+export PYTHONNOUSERSITE=1 PIP_NO_CACHE_DIR=1 TMPDIR=/mnt/ironwolf_14t2/users/binzhang/local/tmp CONDA_PKGS_DIRS=/mnt/ironwolf_14t2/users/binzhang/local/conda-pkgs
+conda env create -f environment_repro.yml -p /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-repro-from-yml
+conda activate /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-repro-from-yml
+bash install_minkowskiengine.sh
 ```
 
-On another machine, install a compatible MinkowskiEngine 0.5.4 build separately.
+The temporary and package-cache directories above already exist on this host.
+The YAML installs the pinned Conda and pip dependencies, including CUDA 11.7,
+and sets `PYTHONNOUSERSITE=1` and `OMP_NUM_THREADS=4` when activated. The separate
+script installs MinkowskiEngine 0.5.4 from a checked source revision, applies the
+Python 3.10 and PyTorch compatibility patches, and checks GPU forward/backward
+operations and package dependencies. It requires Git, GCC/G++ 11, system OpenBLAS,
+and a compatible NVIDIA driver on the host. Temporary build files go to
+`minkowskiengine-builds` beside the environment and are removed after successful
+installation and verification; failed builds are retained for diagnosis.
 
-The environment already configured and tested on this machine can be activated directly:
+The package versions follow the rebuilt environment rather than the historical
+reference list in `environment.txt`. In particular, `diffusers==0.24.0` requires
+`huggingface-hub==0.19.4`. These files reproduce the installation procedure; they
+do not guarantee byte-identical compiler output or identical model predictions.
+
+The installation procedure was tested on this host on November 17, 2026 in
+`transformercvn-repro-from-yml`. All 128 Python package versions matched the
+reference environment, as did the compared Conda package builds and all
+MinkowskiEngine Python source files. All three trainers imported successfully;
+MinkowskiEngine CUDA forward/backward checks and `pip check` passed. Fixed-seed
+sparse-convolution outputs and feature gradients matched the reference exactly.
+The original reference environment was subsequently removed; use the environment
+recreated from the YAML.
+
+For later use:
 
 ```bash
-source /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-legacy/bin/activate
+conda activate /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-repro-from-yml
 ```
 
-Run training from the repository directory:
+Run training after activation:
 
 ```bash
-export OMP_NUM_THREADS=4
+python train.py -o option_files/fdhd_beam_2026prod.json -n training_2026prod
 python train.py -o option_files/fdhd_beam_2018prod_aiml_tutorial_2025_04_21.json -n tutorial_dense
 ```
 
-Set `training_file` in the options JSON to your HDF5 dataset, or override it with `-t /path/to/data.h5`. GPU training requires an execution environment with NVIDIA GPU access. The current environment has passed short CPU and GPU training/validation runs.
+For notebook use, register this environment once, then select its kernel:
+
+```bash
+python -m ipykernel install --user --name transformercvn-repro-from-yml --display-name "TransformerCVN (from YAML)"
+```
 
 # EAF
 This tutorial will use the Fermilab Elastic Analysis Facility (EAF) but can be run elsewhere, preferably with CUDA-supported GPUs. Instructions for using an EAF server are available [here](https://mu2ewiki.fnal.gov/wiki/Elastic_Analysis_Facility_(EAF)). A Fermilab Services account is required as well as either a Fermilab VPN connection or a browser proxy as detailed in the linked instructions.
