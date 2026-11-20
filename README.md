@@ -62,8 +62,8 @@ conda activate /mnt/ironwolf_14t2/users/binzhang/local/transformercvn-repro-from
 Run training after activation:
 
 ```bash
-python train.py -o option_files/fdhd_beam_2026prod.json -n training_2026prod
-python train.py -o option_files/fdhd_beam_2018prod_aiml_tutorial_2025_04_21.json -n tutorial_dense
+python train.py -o option_files/fdhd_beam_2026prod.json -n training_2026prod --sdxl
+python train.py -o option_files/fdhd_beam_2018prod_aiml_tutorial_2025_04_21.json -n tutorial_dense --sdxl
 ```
 
 For notebook use, register this environment once, then select its kernel:

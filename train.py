@@ -107,7 +107,7 @@ def main(
         checkpoint_callback = ModelCheckpoint(
             verbose=options.verbose_output,
             every_n_train_steps=eval,
-            monitor="val_epoch_AUC",
+            monitor="event_epoch_AUC",
             mode="max",
             save_top_k=5,
             save_last=True

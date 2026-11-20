@@ -16,7 +16,7 @@ events.out.tfevents.*
 
 # Training outputs and checkpoints
 /lightning_logs/
-/training_*/
+/training_*
 /tutorial_dense
 /environment_check_*/
 /test_output/
